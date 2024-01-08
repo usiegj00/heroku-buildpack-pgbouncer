@@ -14,6 +14,8 @@ unset GIT_DIR
 BUILD_DIR=$1
 CACHE_DIR=$2
 BUILDPACK_DIR="$(dirname "$(dirname "$0")")"
+echo PWD: $(pwd)
+echo "ARGS: $0 $1 $2 $3"
 
 # vendor directories
 VENDORED_PGBOUNCER="vendor/pgbouncer"
@@ -25,6 +27,7 @@ mkdir -p "$BUILD_DIR/bin"
 mkdir -p "$BUILD_DIR/$VENDORED_PGBOUNCER"
 
 echo "-----> pgbouncer-buildpack: Vendoring pgbouncer into slug"
+echo tar xzf "$BUILDPACK_DIR/pgbouncer-${STACK}".tgz -C "${BUILD_DIR}"/"${VENDORED_PGBOUNCER}"
 tar xzf "$BUILDPACK_DIR/pgbouncer-${STACK}".tgz -C "${BUILD_DIR}"/"${VENDORED_PGBOUNCER}"
 pgbouncer_version=$("${BUILD_DIR}"/"${VENDORED_PGBOUNCER}"/bin/pgbouncer -V 2>&1 | head -1 | awk '{ print $NF }')
 echo "-----> pgbouncer-buildpack: Installed pgbouncer ${pgbouncer_version}"
